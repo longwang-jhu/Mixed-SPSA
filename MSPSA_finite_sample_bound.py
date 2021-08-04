@@ -79,20 +79,25 @@ for iter_idx in range(iter_num):
 MSPSA_theta_error_bound = np.concatenate(([theta_0_error**2], MSPSA_theta_error_bound))
 
 ### plot ###
+theta_error_0 = np.linalg.norm(theta_0) ** 2
+
 matplotlib.rcParams.update({"font.size": 12})
 linewidth = 2
 
 plot_theta = plt.figure()
 plt.grid()
 # plt.yscale('log')
-plt.title(r'Mean-Squared Error for $\hat{\mathbf{\theta}}_k$')
+plt.title(r'Normalized Mean-Squared Error for $\hat{\mathbf{\theta}}_k$')
 plt.xlabel("Number of Iterations")
-plt.ylabel("Mean Squared Error")
+plt.ylabel("Normalized Mean Squared Error")
 
-plt.plot(MSPSA_theta_error, linewidth=linewidth, linestyle="-", color="black")
-plt.plot(MSPSA_theta_error_bound, linewidth=linewidth, linestyle="--", color="black")
+plt.plot(MSPSA_theta_error_bound / theta_error_0, linewidth=linewidth, linestyle="--", color="black")
+plt.plot(MSPSA_theta_error / theta_error_0, linewidth=linewidth, linestyle="-", color="black")
 
 plt.legend(["MSPSA", "Finite-Sample Upper Bound"])
+
+plt.plot(0,1,'ko') 
+
 plt.show()
 plt.close()
 plot_theta.savefig("figures/skewed-quartic-MSPSA-bound-" + str(today) + ".pdf", bbox_inches='tight')
